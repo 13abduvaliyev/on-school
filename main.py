@@ -1,5 +1,8 @@
 from os import system
-from school import students, courses, grades
+
+from school.students import register_student, enroll_in_course, login_student, logout
+from school.courses import view_courses
+from school.grades import check_grades
 
 def show_menu(
         menu: list[tuple[int, str]],
@@ -53,20 +56,34 @@ def main() -> None:
     system('clear')
 
     while True:
-        show_menu(menu)
-        choice = input("\nSelect an option: ")
-        
-        if choice == "1":
-            students_data = students.register_student(students_data)
-        elif choice == "2":
-            user_id = students.login_student(students_data)
-            if user_id != -1:
-                while True:
-                    show_menu(user_menu, user=students_data[user_id])
-                    user_choice = input("Choose an option: ")
-                    if user_choice == '1':
-                        # TODO: kurslar royatini chiqarish
-                        pass
+        while not user:
+            show_menu(menu, user)
+            choice = input("\nSelect an option: ")
+
+            if choice == "1":
+                students_data = user.register_student(students_data)
+            elif choice == "2":
+                user_id = user.login_student(students_data)
+            elif user_id == '3':
+                print("\nExiting ...")
+                exit()
+
+        while user:
+            show_menu(user_menu, user=students_data[user_id])
+            
+            user_choice = input("Choose an option: ")
+            
+            if user_choice == '1':
+                view_courses(courses_data)
+            elif user_choice == '2':
+                user['cource'].append(enroll_in_course(courses_data, user))
+            elif choice == "3":
+                view_courses(user["courses"])
+            elif choice == "4":
+                check_grades(grades_data, user["email"])
+            elif choice == "5":
+                user = logout()
+
 
 if __name__ == "__main__":
     main()

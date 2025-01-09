@@ -65,4 +65,11 @@ def enroll_in_course(
                                and their details (including enrolled courses) are stored as values.
         student_email (str): The email of the student who is enrolling.
     """
-    pass
+    courses_number = int(input("Select a course number to enroll: "))
+
+    if courses_number - 1 > len(courses_data) or courses_number - 1 < 0:
+        print("\nBu raqamda kurs mavjud emas!, Iltimos boshqa raqam kiriting!\n")
+        return None
+    else:
+        print("Successfully enrolled in {}!\n".format(courses_data[courses_number - 1]["course_name"]))
+        return courses_data[courses_number - 1]
