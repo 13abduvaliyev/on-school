@@ -1,75 +1,63 @@
-from pprint import pprint
+def register_student(student: dict[str, dict[str, str]], student_date: list) -> None:
 
-def register_student(students_data: dict[str, dict[str, str]]) -> None:
-    """
-    Registers a new student by collecting their name, email, and password, 
-    and stores the information in the students_data dictionary.
+    student_name = input("Enter your name: ")
 
-    Args:
-        students_data (dict): A dictionary where student emails are keys 
-                               and their details (name and password) are stored as values.
-    """
-    name = input("Enter your name: ")
     email = input("Enter your email: ")
-    password = input("Enter your password: ")
-
-    user = {
-        "name": name,
-        "email": email,
-        "password": password,
-    }
-    # TODO: 1. validate name, email 2. shifrlash password
+    pasword = input("Enter your password: ")
     
-    n = len(students_data)
-    students_data[100000 + n + 1] = user
+    while True:
+        length = len(pasword)
+        
+        if length < 8:
+            print("Belgilar soni 8 dan kam bolmasligi kerak")
+            pasword = input("Enter your password: ")      
+        else:
+            check_log_count = 0
+            for user in range(len(student_date)):
+                if student_date[user]['password_login']['login'] == email:
+                    print("Bunaqa emailda foydalanuvchi ruyxatdan o`tgan, iltimos boshqa gmaildan foydalanib ko`ring")
+                    email = input("Enter your email: ")
+                    check_log_count +=1
+                    break
+            if check_log_count:
+                pass
+            else:
+                break
+    student = {
+            'name': student_name, 
+            'course': [], 
+            'password_login': {'login': email, 
+                        'password': pasword
+                        }}
+    return student
 
-    print(f"Registration successful! Welcome, {name}.")
-
-    return students_data
-
-def login_student(students_data: dict[str, dict[str, str]]) -> int:
-    """
-    Allows a student to log in by entering their email and password. 
-    If the login is successful, it returns the student's name.
-
-    Args:
-        students_data (dict): A dictionary where student emails are keys 
-                               and their details (name and password) are stored as values.
-
-    Returns:
-        str: The student's name if login is successful, else None.
-    """
-    email = input("Enter your email: ")
+def login_student(students_data: list):
+   
+    login = input("Enter your email: ")
     password = input("Enter your password: ")
 
-    for user_id in students_data:
-        if students_data[user_id]['email'] == email and students_data[user_id]['password'] == password:
-            print(f"Login successful! Welcome back, {students_data[user_id]['name']}.")
-            return user_id
-
-    print("User doesn't exist.")
-    return -1
+    student_dic = {}
+    student_dic['login'] = login
+    student_dic['password'] = password
+    
+    for user in students_data:
+        if(user['password_login']) == student_dic:
+            print(f"Login successful! Welcome back, {user['name']}.")
+            return user
+    return None
 
 def enroll_in_course(
     courses_data: list[dict[str, str]], 
     students_data: dict[str, dict[str, list[str]]], 
-    student_email: str
+    email: str
 ) -> None:
-    """
-    Allows a student to enroll in a course by selecting from the available courses. 
-    The selected course is added to the student's list of enrolled courses.
-
-    Args:
-        courses_data (list): A list of dictionaries containing available course details.
-        students_data (dict): A dictionary where student emails are keys 
-                               and their details (including enrolled courses) are stored as values.
-        student_email (str): The email of the student who is enrolling.
-    """
+ 
     courses_number = int(input("Select a course number to enroll: "))
 
     if courses_number - 1 > len(courses_data) or courses_number - 1 < 0:
-        print("\nBu raqamda kurs mavjud emas!, Iltimos boshqa raqam kiriting!\n")
+        print("Bunday kurs yuq")
         return None
     else:
         print("Successfully enrolled in {}!\n".format(courses_data[courses_number - 1]["course_name"]))
         return courses_data[courses_number - 1]
+   
