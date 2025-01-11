@@ -4,6 +4,6 @@ def check_grades(
         ) -> None:
 
     if len(grades_data) == 0:
-        print("Grades:")
+        print("Hozircha sizda baholar mavjud emas!")
         for course in range(len(student_courses['course'])):
             print(f"{student_courses['course'][course]['course_name']}: Not graded yet")
